@@ -1,8 +1,6 @@
 .root "head"
 .needs "CLineArgs"
 .needs <std>
-.needs <io>
-
 
 CArg init@CArg(String tag, String value){
     my.tag = tag;
@@ -11,16 +9,6 @@ CArg init@CArg(String tag, String value){
 
 CArgs init@CArgs(int argc, adr argv){
     my.args = my.parse(argc, argv);
-    LinkedList argL = my.args;
-
-    argL.forEach( [CArg arg] => {
-        printString(arg.tag);
-        print(" = ");
-        printString(arg.value);
-        print("\n");
-        return 0;
-    });
-
 };
 
 LinkedList parse@CArgs(int argc, adr argv){
