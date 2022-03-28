@@ -99,7 +99,8 @@ int main(int argc, adr argv){
 
 	// print mm/dd/yyyy
 	print("Formatted date for: ");
-	printString(monthString); print("/"); printString(dayString); print("/"); printString(yearString); print("\n");
+	printString(monthString); print("/"); printString(dayString); print("/"); printString(yearString);
+	print("\n\n");
 
 	bool pass = false;
 	// printJulian
