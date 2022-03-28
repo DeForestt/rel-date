@@ -6,7 +6,7 @@
 .needs <DateTime>
 
 int printJulian(int year, int month, int day){
-	int julian = _daysSinceJan1(month, day, year) + 1;
+	int julian = daysSinceJan1(month, day, year) + 1;
 	printInt(year);
 	// get the number of digits in julian
 	int digits = 0;
@@ -22,7 +22,7 @@ int printJulian(int year, int month, int day){
 };
 
 int printDaysSince(int year, int month, int day, int relYear){
-	int date = _dateRelativeTo(month, day, year, relYear);
+	int date = dateRelativeTo(month, day, year, relYear);
 	printInt(date);
 };
 
@@ -158,8 +158,8 @@ int main(int argc, adr argv){
 	if args.has("-d") |
 	args.has("--day"){
 		print("Day of the week: ");
-		int dow = _dayOfWeek(month, day, year);
-		print(_dowToString(dow)); print("\n");
+		int dow = dayOfWeek(month, day, year);
+		print(dowToString(dow)); print("\n");
 		pass = true;
 	};
 
