@@ -1,0 +1,12 @@
+.needs <io>
+.needs <std>
+.needs "head/CLineArgs"
+
+
+int main(int argc, adr argv){
+	assert(1 == 1, "Failed 1 == 1 assert");
+
+	CArgs args = new CArgs(argc, argv);
+
+	return 0;
+};

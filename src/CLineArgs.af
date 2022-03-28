@@ -1,0 +1,60 @@
+.root "head"
+.needs "CLineArgs"
+.needs <std>
+.needs <io>
+
+
+CArg init@CArg(String tag, String value){
+    my.tag = tag;
+    my.value = value;
+};
+
+CArgs init@CArgs(int argc, adr argv){
+    my.args = my.parse(argc, argv);
+    LinkedList argL = my.args;
+
+    argL.forEach( [CArg arg] => {
+        printString(arg.tag);
+        print(" = ");
+        printString(arg.value);
+        print("\n");
+        return 0;
+    });
+
+};
+
+LinkedList parse@CArgs(int argc, adr argv){
+    LinkedList args = new LinkedList();
+
+    for int i = 1; i < argc; i++{
+        adr ptr = argv + i * 8;
+        String curr = new String(ptr as adr);
+
+        // check for -
+        if curr.at(0) == '-' {
+            i++;
+            if i < argc {
+                ptr = argv + i * 8;
+                String value = new String(ptr as adr);
+                if value.at(0) != '-' {
+                    CArg arg = new CArg(curr, value);
+                    args.append(arg);
+                } else {
+                    CArg arg = new CArg(curr, new String("EMPTY"));
+                    i = i - 1;
+                    args.append(arg);
+                };
+            } else {
+                String value = new String("EMPTY");
+                CArg arg = new CArg(curr, value);
+                args.append(arg);
+            };
+        } else {
+            String tag = new String("EMPTY");
+            String value = curr;
+            CArg arg = new CArg(tag, value);
+            args.append(arg);
+        };
+    };
+    return args;
+};
