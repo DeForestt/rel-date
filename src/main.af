@@ -1,5 +1,9 @@
 .needs <io>
-int main(){
-	print("Hello, World!\n");
+.needs <std>
+.needs "head/CLineArgs"
+.needs <String>
+
+int main(int argc, adr argv){
+	CArgs args = new CArgs(argc, argv);
 	return 0;
 };

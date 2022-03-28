@@ -15,6 +15,7 @@ class CArgs {
 
     private LinkedList parse(int argc, adr argv);
 
-    public CArg get(String tag);
+    public String get(String tag);
     public bool has(String tag);
+    public LinkedList getTaglessArgs();
 };

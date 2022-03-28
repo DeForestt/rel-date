@@ -1,2 +1,52 @@
 .root "head"
 .needs "DateFunctions.gs"
+
+int daysInMonth(int month, int year){
+    if month == 2 {
+        if year % 4 == 0 {
+            if year % 100 == 0 {
+                if year % 400 == 0 {
+                    return 29;
+                };
+                return 28;
+            };
+            return 29;
+        };
+        return 28;
+    };
+
+    if (month == 4) | (month == 6) | (month == 9) | (month == 11) {
+        return 30;
+    };
+
+    return 31;
+};
+
+int daysInYear(int year){
+    if year % 4 == 0 {
+        if year % 100 == 0 {
+            if year % 400 == 0 {
+                return 366;
+            };
+            return 365;
+        };
+        return 366;
+    };
+    return 365;
+};
+
+int daysSinceJan1(int month, int day, int year){
+    int days = 0;
+    for int i = 1; i < month; i++
+        days = days + daysInMonth(i, year);
+    
+    days = days + day - 1;
+    return days;
+};
+
+int dateRelativeTo(int month, int day, int year, int relYear){
+    int days = daysSinceJan1(month, day, year);
+    for int i = relYear; i < year; i++
+        days = days + daysInYear(i);
+    return days;
+};

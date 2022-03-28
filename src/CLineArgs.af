@@ -2,6 +2,11 @@
 .needs "CLineArgs"
 .needs <std>
 
+class TagArg{   
+    adr sTag;
+    bool found;
+};
+
 CArg init@CArg(String tag, String value){
     my.tag = tag;
     my.value = value;
@@ -9,6 +14,7 @@ CArg init@CArg(String tag, String value){
 
 CArgs init@CArgs(int argc, adr argv){
     my.args = my.parse(argc, argv);
+    LinkedList args = my.args;
 };
 
 LinkedList parse@CArgs(int argc, adr argv){
@@ -45,4 +51,42 @@ LinkedList parse@CArgs(int argc, adr argv){
         };
     };
     return args;
+};
+
+bool has@CArgs(adr tag){
+    LinkedList args = my.args;
+
+    TagArg tagArg = new TagArg();
+    tagArg.sTag = tag;
+    tagArg.found = false;
+
+    if args.size() > 0 args.forEach([CArg arg, int index, TagArg t] => {
+        String val = arg.tag;
+        if val == t.sTag {
+            t.found = true;
+            return 1;
+        };
+        return 0;
+    }, tagArg);
+
+    bool found = tagArg.found;
+    free(tagArg);
+    return found;
+};
+
+String get@CArgs(adr tag){
+    LinkedList args = my.args;
+
+    if my.has(tag) == false panic("Tag not found");
+
+    LinkedList found = args.where([CArg arg, int index, adr tg] => {
+        String val = arg.tag;
+        if val == tg
+            return true;
+        return false;
+    }, tag);
+
+    CArg result = found.get(0);
+
+    return result.value;
 };
