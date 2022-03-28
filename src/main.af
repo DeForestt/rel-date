@@ -36,6 +36,7 @@ int main(int argc, adr argv){
 		print("  -v, --version: Print the version number\n");
 		print("  -j, --julian: Use Julian calendar\n");
 		print("  -r, --relative: Print relative date\n");
+		print("  -d, --day: print the day of the week\n");
 		print("  \t eg fdate 2022 12 5 -r 1997\n");
 		return 0;
 	};
@@ -135,6 +136,14 @@ int main(int argc, adr argv){
 		print("Days since Jan 1, ");
 		printInt(relYear); print(": ");
 		printDaysSince(year, month, day, relYear); print("\n");
+		pass = true;
+	};
+
+	if args.has("-d") |
+	args.has("--day"){
+		print("Day of the week: ");
+		int dow = dayOfWeek(month, day, year);
+		print(dowToString(dow)); print("\n");
 		pass = true;
 	};
 

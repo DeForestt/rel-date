@@ -1,4 +1,5 @@
 .root "head"
+.needs <std>
 .needs "DateFunctions.gs"
 
 int daysInMonth(int month, int year){
@@ -54,4 +55,29 @@ int dateRelativeTo(int month, int day, int year, int relYear){
 int dayOfWeek(int month, int day, int year){
     int days = dateRelativeTo(month, day, year, 1995);
     return days % 7;
+};
+
+adr dowToString(int dow){
+    if dow == 0 {
+        return "Sunday";
+    };
+    if dow == 1 {
+        return "Monday";
+    };
+    if dow == 2 {
+        return "Tuesday";
+    };
+    if dow == 3 {
+        return "Wednesday";
+    };
+    if dow == 4 {
+        return "Thursday";
+    };
+    if dow == 5 {
+        return "Friday";
+    };
+    if dow == 6 {
+        return "Saturday";
+    };
+    panic("Invalid day of week");
 };
