@@ -101,5 +101,7 @@ LinkedList getTaglessArgs@CArgs(){
     });
 
     LinkedList strings = found.map([CArg arg] => return arg.value);
+
+    free(found);
     return strings;
 };
