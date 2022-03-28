@@ -101,11 +101,13 @@ int main(int argc, adr argv){
 	print("Formatted date for: ");
 	printString(monthString); print("/"); printString(dayString); print("/"); printString(yearString); print("\n");
 
+	bool pass = false;
 	// printJulian
 	if args.has("-j") |
 	args.has("--julian"){
 		print("Julian date: ");
 		printJulian(year, month, day); print("\n");
+		pass = true;
 	};
 
 	if args.has("-r") |
@@ -129,9 +131,28 @@ int main(int argc, adr argv){
 			relYear = relYearString.toInt();
 		};
 
-		print("Days since: Jan 1, ");
-		printInt(relYear); print(" ");
+		print("Days since Jan 1, ");
+		printInt(relYear); print(": ");
 		printDaysSince(year, month, day, relYear); print("\n");
+		pass = true;
+	};
+
+	if !pass {
+		// print the juliandate
+		print("Julian date: ");
+		printJulian(year, month, day); print("\n");
+
+		// print days since epoch
+		print("Days since Epoch: ");
+		printDaysSince(year, month, day, 1970); print("\n");
+
+		// days sinc 1900
+		print("Days since Jan 1, 1900: ");
+		printDaysSince(year, month, day, 1900); print("\n");
+
+		// dayse since 1957
+		print("Days since Jan 1, 1957: ");
+		printDaysSince(year, month, day, 1957); print("\n");
 	};
 
 	return 0;
