@@ -1,9 +1,138 @@
 .needs <io>
 .needs <std>
 .needs "head/CLineArgs"
+.needs "head/DateFunctions"
 .needs <String>
+
+int printJulian(int year, int month, int day){
+	int julian = daysSinceJan1(month, day, year) + 1;
+	printInt(year);
+	// get the number of digits in julian
+	int digits = 0;
+	int temp = julian;
+	while(temp > 0){
+		temp = temp / 10;
+		digits++;
+	};
+
+	for int i = digits; i < 3; i++
+		printChar('0');
+	printInt(julian);
+};
+
+int printDaysSince(int year, int month, int day, int relYear){
+	int date = dateRelativeTo(month, day, year, relYear);
+	printInt(date);
+};
 
 int main(int argc, adr argv){
 	CArgs args = new CArgs(argc, argv);
+
+	if args.has("-h") |
+	args.has("--help"){
+		print("Usage: fdate <year> <month> <day> <options>\n");
+		print("Options:\n");
+		print("  -h, --help: Print this help message\n");
+		print("  -v, --version: Print the version number\n");
+		print("  -j, --julian: Use Julian calendar\n");
+		print("  -r, --relative: Print relative date\n");
+		print("  \t eg fdate 2022 12 5 -r 1997\n");
+		return 0;
+	};
+
+	if args.has("-v") |
+	args.has("--version"){
+		print("fdate version 1.0.0\n");
+		return 0;
+	};
+
+	
+	LinkedList dateStrings = args.getTaglessArgs();
+
+	if dateStrings.size() < 3{
+		print("Usage: fdate <year> <month> <day> <options>\n");
+		return 1;
+	};
+
+	String yearString = dateStrings.get(0);
+	String monthString = dateStrings.get(1);
+	String dayString = dateStrings.get(2);
+
+	if !yearString.isNumeric() {
+		print("Invalid year\n");
+		return 1;
+	};
+
+	if !monthString.isNumeric() {
+		print("Invalid month\n");
+		return 1;
+	};
+
+	if !dayString.isNumeric() {
+		print("Invalid day\n");
+		return 1;
+	};
+
+	int year = yearString.toInt();
+	int month = monthString.toInt();
+	int day = dayString.toInt();
+
+	if month < 1 | month > 12 {
+		print("Invalid month\n");
+		return 1;
+	};
+
+	if day < 1 | day > 31 {
+		print("Invalid day\n");
+		return 1;
+	};
+
+	if month == 2 & day > 29 {
+		print("Invalid day\n");
+		return 1;
+	};
+
+	if month == 4 | month == 6 | month == 9 | month == 11 & day > 30 {
+		print("Invalid day\n");
+		return 1;
+	};
+
+	// print mm/dd/yyyy
+	print("Formatted date for: ");
+	printString(monthString); print("/"); printString(dayString); print("/"); printString(yearString); print("\n");
+
+	// printJulian
+	if args.has("-j") |
+	args.has("--julian"){
+		print("Julian date: ");
+		printJulian(year, month, day); print("\n");
+	};
+
+	if args.has("-r") |
+	args.has("--relative"){
+		// get the year to compare to
+		int relYear = 0;
+
+		if args.has("-r"){
+			String relYearString = args.get("-r");
+			if !relYearString.isNumeric() {
+				print("Invalid year\n");
+				return 1;
+			};
+			relYear = relYearString.toInt();
+		} else if args.has("--relative"){
+			String relYearString = args.get("--relative");
+			if !relYearString.isNumeric() {
+				print("Invalid year\n");
+				return 1;
+			};
+			relYear = relYearString.toInt();
+		};
+
+		print("Days since: Jan 1, ");
+		printInt(relYear); print(" ");
+		printDaysSince(year, month, day, relYear); print("\n");
+	};
+
 	return 0;
 };
