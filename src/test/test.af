@@ -4,18 +4,18 @@
 .needs "head/DateFunctions"
 
 int testDate(){
-	assert(daysSinceJan1(1,1,2000) == 0, "daysSinceJan1(1,1,2000) == 0");
+	assert(_daysSinceJan1(1,1,2000) == 0, "daysSinceJan1(1,1,2000) == 0");
 	return 0;
 };
 
 int testdateRelativeTo(){
-	assert(dateRelativeTo(1,1,2000,2000) == 0, "dateRelativeTo(1,1,2000,2000) == 1");
-	assert(dateRelativeTo(1,1,2000,1999) == 365, "dateRelativeTo(1,1,2000,1999) == 365");
+	assert(_dateRelativeTo(1,1,2000,2000) == 0, "dateRelativeTo(1,1,2000,2000) == 1");
+	assert(_dateRelativeTo(1,1,2000,1999) == 365, "dateRelativeTo(1,1,2000,1999) == 365");
 };
 
 int testDayOfWeek(){
-	assert(dayOfWeek(03,28,2022) == 1, "dayOfWeek(03,28,2022) == 1");
-	assert(dayOfWeek(03,28,2021) == 0, "dayOfWeek(03,28,2021) == 2");
+	assert(_dayOfWeek(03,28,2022) == 1, "dayOfWeek(03,28,2022) == 1");
+	assert(_dayOfWeek(03,28,2021) == 0, "dayOfWeek(03,28,2021) == 2");
 };
 
 int main(int argc, adr argv){

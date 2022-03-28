@@ -3,9 +3,10 @@
 .needs "head/CLineArgs"
 .needs "head/DateFunctions"
 .needs <String>
+.needs <DateTime>
 
 int printJulian(int year, int month, int day){
-	int julian = daysSinceJan1(month, day, year) + 1;
+	int julian = _daysSinceJan1(month, day, year) + 1;
 	printInt(year);
 	// get the number of digits in julian
 	int digits = 0;
@@ -21,8 +22,31 @@ int printJulian(int year, int month, int day){
 };
 
 int printDaysSince(int year, int month, int day, int relYear){
-	int date = dateRelativeTo(month, day, year, relYear);
+	int date = _dateRelativeTo(month, day, year, relYear);
 	printInt(date);
+};
+
+bool validateDate(int year, int month, int day){
+			if month < 1 | month > 12 {
+			print("Invalid month\n");
+			return false;
+		};
+
+		if day < 1 | day > 31 {
+			print("Invalid day\n");
+			return false;
+		};
+
+		if month == 2 & day > 29 {
+			print("Invalid day\n");
+			return false;
+		};
+
+		if month == 4 | month == 6 | month == 9 | month == 11 & day > 30 {
+			print("Invalid day\n");
+			return false;
+		};
+	return true;
 };
 
 int main(int argc, adr argv){
@@ -47,60 +71,52 @@ int main(int argc, adr argv){
 		return 0;
 	};
 
+	int year;
+	int month;
+	int day;
 	
 	LinkedList dateStrings = args.getTaglessArgs();
+	if dateStrings.size() == 0{
+		DateTime dt = Now();
+		year = dt.getYear();
+		month = dt.getMonth();
+		day = dt.getDay();
+	} else if dateStrings.size() == 3{
 
-	if dateStrings.size() < 3{
-		print("Usage: fdate <year> <month> <day> <options>\n");
-		return 1;
-	};
+		String yearString = dateStrings.get(0);
+		String monthString = dateStrings.get(1);
+		String dayString = dateStrings.get(2);
 
-	String yearString = dateStrings.get(0);
-	String monthString = dateStrings.get(1);
-	String dayString = dateStrings.get(2);
+		if !yearString.isNumeric() {
+			print("Invalid year\n");
+			return 1;
+		};
 
-	if !yearString.isNumeric() {
-		print("Invalid year\n");
-		return 1;
-	};
+		if !monthString.isNumeric() {
+			print("Invalid month\n");
+			return 1;
+		};
 
-	if !monthString.isNumeric() {
-		print("Invalid month\n");
-		return 1;
-	};
+		if !dayString.isNumeric() {
+			print("Invalid day\n");
+			return 1;
+		};
 
-	if !dayString.isNumeric() {
-		print("Invalid day\n");
-		return 1;
-	};
+		year = yearString.toInt();
+		month = monthString.toInt();
+		day = dayString.toInt();
 
-	int year = yearString.toInt();
-	int month = monthString.toInt();
-	int day = dayString.toInt();
-
-	if month < 1 | month > 12 {
-		print("Invalid month\n");
-		return 1;
-	};
-
-	if day < 1 | day > 31 {
-		print("Invalid day\n");
-		return 1;
-	};
-
-	if month == 2 & day > 29 {
-		print("Invalid day\n");
-		return 1;
-	};
-
-	if month == 4 | month == 6 | month == 9 | month == 11 & day > 30 {
-		print("Invalid day\n");
+		if !validateDate(year, month, day){
+			return 1;
+		};
+	} else {
+		print("Invalid number of arguments\n");
 		return 1;
 	};
 
 	// print mm/dd/yyyy
 	print("Formatted date for: ");
-	printString(monthString); print("/"); printString(dayString); print("/"); printString(yearString);
+	printInt(month); print("/"); printInt(day); print("/"); printInt(year);
 	print("\n\n");
 
 	bool pass = false;
@@ -142,8 +158,8 @@ int main(int argc, adr argv){
 	if args.has("-d") |
 	args.has("--day"){
 		print("Day of the week: ");
-		int dow = dayOfWeek(month, day, year);
-		print(dowToString(dow)); print("\n");
+		int dow = _dayOfWeek(month, day, year);
+		print(_dowToString(dow)); print("\n");
 		pass = true;
 	};
 
