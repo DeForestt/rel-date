@@ -91,17 +91,15 @@ String get@CArgs(adr tag){
     return result.value;
 };
 
+.needs <io>
 LinkedList getTaglessArgs@CArgs(){
     LinkedList args = my.args;
 
     LinkedList found = args.where([CArg arg, int index, adr tg] => {
         String val = arg.tag;
-        if val == "EMPTY"
-            return true;
-        return false;
+        return val == "EMPTY";
     });
 
-    LinkedList strings = args.map([CArg arg] => return arg.value);
-
+    LinkedList strings = found.map([CArg arg] => return arg.value);
     return strings;
 };
