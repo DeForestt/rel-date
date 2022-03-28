@@ -50,3 +50,8 @@ int dateRelativeTo(int month, int day, int year, int relYear){
         days = days + daysInYear(i);
     return days;
 };
+
+int dayOfWeek(int month, int day, int year){
+    int days = dateRelativeTo(month, day, year, 1995);
+    return days % 7;
+};
