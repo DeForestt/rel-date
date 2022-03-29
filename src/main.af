@@ -81,8 +81,6 @@ int main(int argc, adr argv){
 		year = dt.getYear();
 		month = dt.getMonth();
 		day = dt.getDay();
-
-		printInt(dt.getHour()); printChar(':'); printInt(dt.getMinute()); printChar(':'); printInt(dt.getSecond()); printChar(' ');
 	} else if dateStrings.size() == 3{
 
 		String yearString = dateStrings.get(0);
