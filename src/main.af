@@ -1,9 +1,14 @@
 .needs <io>
 .needs <std>
-.needs "head/CLineArgs"
 .needs <String>
 .needs <DateTime>
-import { daysInMonth, daysSinceJan1, dateRelativeTo, dayOfWeek, dowToString } from "./src/DateFunctions.af" under dt;
+
+import CArgs from "./src/CLineArgs.af";
+import { daysInMonth,
+		daysSinceJan1,
+		dateRelativeTo, 
+		dayOfWeek,
+		dowToString } from "./src/DateFunctions.af" under dt;
 
 
 int printJulian(int year, int month, int day){
