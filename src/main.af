@@ -4,12 +4,8 @@
 .needs <DateTime>
 
 import CArgs from "./src/CLineArgs.af";
-import { daysInMonth,
-		daysSinceJan1,
-		dateRelativeTo, 
-		dayOfWeek,
-		dowToString } from "./src/DateFunctions.af" under dt;
 
+import { daysInMonth, daysSinceJan1, dateRelativeTo,  dayOfWeek, dowToString } from "./src/DateFunctions.af" under dt;
 
 int printJulian(int year, int month, int day){
 	int julian = dt.daysSinceJan1(month, day, year) + 1;
