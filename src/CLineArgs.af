@@ -1,6 +1,7 @@
 .needs <std>
 .needs <Collections>
-.needs <String>
+
+import String from "String";
 
 class CArg {
     String tag;
