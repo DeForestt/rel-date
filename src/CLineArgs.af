@@ -1,7 +1,8 @@
 .needs <std>
-.needs <Collections>
 
 import String from "String";
+import ICollection from "Collections";
+import LinkedList from "Collections";
 
 class CArg {
     String tag;

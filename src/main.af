@@ -1,10 +1,12 @@
 .needs <io>
 .needs <std>
-.needs <Collections>
 
 import CArgs from "./src/CLineArgs.af";
 import DateTime from "DateTime.af";
 import String from "String.af";
+
+import ICollection from "Collections";
+import LinkedList from "Collections";
 
 import {Now, mmddyyyyToDate} from "DateTime" under std_dt;
 import { daysInMonth, daysSinceJan1, dateRelativeTo,  dayOfWeek, dowToString } from "./src/DateFunctions.af" under dt;
