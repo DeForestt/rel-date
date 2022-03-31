@@ -1,10 +1,10 @@
 .needs <io>
 .needs <std>
 .needs <String>
-.needs <DateTime>
 
 import CArgs from "./src/CLineArgs.af";
-
+import DateTime from "DateTime.af";
+import {Now, mmddyyyyToDate} from "DateTime" under std_dt;
 import { daysInMonth, daysSinceJan1, dateRelativeTo,  dayOfWeek, dowToString } from "./src/DateFunctions.af" under dt;
 
 int printJulian(int year, int month, int day){
@@ -79,10 +79,15 @@ int main(int argc, adr argv){
 	
 	LinkedList dateStrings = args.getTaglessArgs();
 	if dateStrings.size() == 0{
-		DateTime today = Now(-4);
+		DateTime today = std_dt.Now(-4);
 		year = today.getYear();
 		month = today.getMonth();
 		day = today.getDay();
+	} else if dateStrings.size() == 1{
+		DateTime date = std_dt.mmddyyyyToDate(dateStrings.get(0));
+		year = date.getYear();
+		month = date.getMonth();
+		day = date.getDay();
 	} else if dateStrings.size() == 3{
 
 		String yearString = dateStrings.get(0);
