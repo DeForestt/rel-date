@@ -1,4 +1,3 @@
-.needs <io>
 .needs <std>
 
 import CArgs from "./src/CLineArgs.af";
@@ -7,13 +6,16 @@ import String from "String.af";
 
 import ICollection from "Collections";
 import LinkedList from "Collections";
+import {printChar, print, printInt} from "io" under io;
 
 import {Now, mmddyyyyToDate} from "DateTime" under std_dt;
 import { daysInMonth, daysSinceJan1, dateRelativeTo,  dayOfWeek, dowToString } from "./src/DateFunctions.af" under dt;
+import {matches} from "./src/StringMatch" under match;
+
 
 int printJulian(int year, int month, int day){
 	int julian = dt.daysSinceJan1(month, day, year) + 1;
-	printInt(year);
+	io.printInt(year);
 	// get the number of digits in julian
 	int digits = 0;
 	int temp = julian;
@@ -23,33 +25,33 @@ int printJulian(int year, int month, int day){
 	};
 
 	for int i = digits; i < 3; i++
-		printChar('0');
-	printInt(julian);
+		io.printChar('0');
+	io.printInt(julian);
 };
 
 int printDaysSince(int year, int month, int day, int relYear){
 	int date = dt.dateRelativeTo(month, day, year, relYear);
-	printInt(date);
+	io.printInt(date);
 };
 
 bool validateDate(int year, int month, int day){
 			if month < 1 | month > 12 {
-			print("Invalid month\n");
+			io.print("Invalid month\n");
 			return false;
 		};
 
 		if day < 1 | day > 31 {
-			print("Invalid day\n");
+			io.print("Invalid day\n");
 			return false;
 		};
 
 		if month == 2 & day > 29 {
-			print("Invalid day\n");
+			io.print("Invalid day\n");
 			return false;
 		};
 
 		if month == 4 | month == 6 | month == 9 | month == 11 & day > 30 {
-			print("Invalid day\n");
+			io.print("Invalid day\n");
 			return false;
 		};
 	return true;
@@ -60,20 +62,20 @@ int main(int argc, adr argv){
 
 	if args.has("-h") |
 	args.has("--help"){
-		print("Usage: fdate <year> <month> <day> <options>\n");
-		print("Options:\n");
-		print("  -h, --help: Print this help message\n");
-		print("  -v, --version: Print the version number\n");
-		print("  -j, --julian: Use Julian calendar\n");
-		print("  -r, --relative: Print relative date\n");
-		print("  -d, --day: print the day of the week\n");
-		print("  \t eg fdate 2022 12 5 -r 1997\n");
+		io.print("Usage: fdate <year> <month> <day> <options>\n");
+		io.print("Options:\n");
+		io.print("  -h, --help: io.print this help message\n");
+		io.print("  -v, --version: io.print the version number\n");
+		io.print("  -j, --julian: Use Julian calendar\n");
+		io.print("  -r, --relative: io.print relative date\n");
+		io.print("  -d, --day: io.print the day of the week\n");
+		io.print("  \t eg fdate 2022 12 5 -r 1997\n");
 		return 0;
 	};
 
 	if args.has("-v") |
 	args.has("--version"){
-		print("fdate version 1.0.0\n");
+		io.print("fdate version 1.0.0\n");
 		return 0;
 	};
 
@@ -88,7 +90,20 @@ int main(int argc, adr argv){
 		month = today.getMonth();
 		day = today.getDay();
 	} else if dateStrings.size() == 1{
-		DateTime date = std_dt.mmddyyyyToDate(dateStrings.get(0));
+		char formatChar = '';
+		String dateString = dateStrings.get(0);
+		if match.matches(dateString, "dd-dd-dddd"){
+			formatChar = '-';
+		} else if match.matches(dateString, "dd/dd/dddd"){
+			formatChar = '/';
+		} else if match.matches(dateString, "dd.dd.dddd"){
+			formatChar = '.';
+		} else {
+			io.print("Invalid date format\n");
+			return 1;
+		};
+
+		DateTime date = std_dt.mmddyyyyToDate(dateStrings.get(0), formatChar);
 		year = date.getYear();
 		month = date.getMonth();
 		day = date.getDay();
@@ -99,17 +114,17 @@ int main(int argc, adr argv){
 		String dayString = dateStrings.get(2);
 
 		if !yearString.isNumeric() {
-			print("Invalid year\n");
+			io.print("Invalid year\n");
 			return 1;
 		};
 
 		if !monthString.isNumeric() {
-			print("Invalid month\n");
+			io.print("Invalid month\n");
 			return 1;
 		};
 
 		if !dayString.isNumeric() {
-			print("Invalid day\n");
+			io.print("Invalid day\n");
 			return 1;
 		};
 
@@ -121,21 +136,21 @@ int main(int argc, adr argv){
 			return 1;
 		};
 	} else {
-		print("Invalid number of arguments\n");
+		io.print("Invalid number of arguments\n");
 		return 1;
 	};
 
-	// print mm/dd/yyyy
-	print("Formatted date for: ");
-	printInt(month); print("/"); printInt(day); print("/"); printInt(year);
-	print("\n\n");
+	// io.print mm/dd/yyyy
+	io.print("Formatted date for: ");
+	io.printInt(month); io.print("/"); io.printInt(day); io.print("/"); io.printInt(year);
+	io.print("\n\n");
 
 	bool pass = false;
 	// printJulian
 	if args.has("-j") |
 	args.has("--julian"){
-		print("Julian date: ");
-		printJulian(year, month, day); print("\n");
+		io.print("Julian date: ");
+		printJulian(year, month, day); io.print("\n");
 		pass = true;
 	};
 
@@ -147,49 +162,49 @@ int main(int argc, adr argv){
 		if args.has("-r"){
 			String relYearString = args.get("-r");
 			if !relYearString.isNumeric() {
-				print("Invalid year\n");
+				io.print("Invalid year\n");
 				return 1;
 			};
 			relYear = relYearString.toInt();
 		} else if args.has("--relative"){
 			String relYearString = args.get("--relative");
 			if !relYearString.isNumeric() {
-				print("Invalid year\n");
+				io.print("Invalid year\n");
 				return 1;
 			};
 			relYear = relYearString.toInt();
 		};
 
-		print("Days since Jan 1, ");
-		printInt(relYear); print(": ");
-		printDaysSince(year, month, day, relYear); print("\n");
+		io.print("Days since Jan 1, ");
+		io.printInt(relYear); io.print(": ");
+		printDaysSince(year, month, day, relYear); io.print("\n");
 		pass = true;
 	};
 
 	if args.has("-d") |
 	args.has("--day"){
-		print("Day of the week: ");
+		io.print("Day of the week: ");
 		int dow = dt.dayOfWeek(month, day, year);
-		print(dt.dowToString(dow)); print("\n");
+		io.print(dt.dowToString(dow)); io.print("\n");
 		pass = true;
 	};
 
 	if !pass {
-		// print the juliandate
-		print("Julian date: ");
-		printJulian(year, month, day); print("\n");
+		// io.print the juliandate
+		io.print("Julian date: ");
+		printJulian(year, month, day); io.print("\n");
 
-		// print days since epoch
-		print("Days since Epoch: ");
-		printDaysSince(year, month, day, 1970); print("\n");
+		// io.print days since epoch
+		io.print("Days since Epoch: ");
+		printDaysSince(year, month, day, 1970); io.print("\n");
 
 		// days sinc 1900
-		print("Days since Jan 1, 1900: ");
-		printDaysSince(year, month, day, 1900); print("\n");
+		io.print("Days since Jan 1, 1900: ");
+		printDaysSince(year, month, day, 1900); io.print("\n");
 
 		// dayse since 1957
-		print("Days since Jan 1, 1957: ");
-		printDaysSince(year, month, day, 1957); print("\n");
+		io.print("Days since Jan 1, 1957: ");
+		printDaysSince(year, month, day, 1957); io.print("\n");
 	};
 
 	return 0;
