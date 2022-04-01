@@ -90,7 +90,7 @@ int main(int argc, adr argv){
 		month = today.getMonth();
 		day = today.getDay();
 	} else if dateStrings.size() == 1{
-		char formatChar = '';
+		char formatChar;
 		String dateString = dateStrings.get(0);
 		if match.matches(dateString, "dd-dd-dddd"){
 			formatChar = '-';
