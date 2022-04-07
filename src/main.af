@@ -58,7 +58,7 @@ bool validateDate(int year, int month, int day){
 };
 
 int main(int argc, adr argv){
-	CArgs args = new CArgs(argc, argv);
+	CArgs args = CArgs(argc, argv);
 
 	if args.has("-h") |
 	args.has("--help"){
@@ -100,6 +100,7 @@ int main(int argc, adr argv){
 			formatChar = '.';
 		} else {
 			io.print("Invalid date format\n");
+			io.print("Use mm-dd-yyyy, mm/dd/yyyy, mm.dd.yyyy, or yyyy mm dd \n");
 			return 1;
 		};
 
@@ -132,11 +133,14 @@ int main(int argc, adr argv){
 		month = monthString.toInt();
 		day = dayString.toInt();
 
-		if !validateDate(year, month, day){
-			return 1;
-		};
+
 	} else {
-		io.print("Invalid number of arguments\n");
+		io.print("Invalid date format\n");
+		io.print("Use mm-dd-yyyy, mm/dd/yyyy, mm.dd.yyyy, or yyyy mm dd \n");
+		return 1;
+	};
+
+	if !validateDate(year, month, day){
 		return 1;
 	};
 
